@@ -10,6 +10,7 @@ import {
   SheetTrigger,
   SheetClose
 } from "@/components/ui/sheet";
+import { useRouter } from 'next/navigation';
 
 // Interface for nutrition information
 interface NutritionInfo {
@@ -53,6 +54,7 @@ export const Cart = ({
   removeItem,
   clearCart
 }: CartProps) => {
+  const router = useRouter();
   const totalItems = cartItems.reduce((total, cartItem) => total + cartItem.quantity, 0);
   const subtotal = cartItems.reduce((total, cartItem) => total + (cartItem.item.price * cartItem.quantity), 0);
   
@@ -63,6 +65,15 @@ export const Cart = ({
 
   // Determine if checkout button should be enabled
   const isCheckoutEnabled = cartItems.length > 0;
+
+  // Handle proceed to checkout
+  const handleProceedToCheckout = () => {
+    // In a real application, you might save the cart state to localStorage or context
+    // before navigating to the checkout page
+    
+    // Pass cart data through URL state or context API in a real app
+    router.push('/checkout');
+  };
 
   return (
     <Sheet>
@@ -203,6 +214,7 @@ export const Cart = ({
                       ? 'bg-primary text-primary-foreground' 
                       : 'bg-muted text-muted-foreground cursor-not-allowed'}`}
                   disabled={!isCheckoutEnabled}
+                  onClick={handleProceedToCheckout}
                 >
                   <span>Checkout</span>
                   <ArrowRight className="w-4 h-4" />
@@ -214,4 +226,4 @@ export const Cart = ({
       </SheetContent>
     </Sheet>
   );
-}
+};
